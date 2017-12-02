@@ -7,6 +7,7 @@ from rest_framework import status
 
 from counter.subreddit_api.models import Subreddit
 from counter.subreddit_api.serializers import SubredditSerializer
+from counter.subreddit_api.subreddit_analyze import analyze
 
 # Create your views here.
 class SubredditAnalysisDetailedView(APIView):
@@ -17,7 +18,8 @@ class SubredditAnalysisDetailedView(APIView):
         print("Analyzing ", name)
         subreddit = Subreddit.objects.filter(display_name=name).first()
         if subreddit is None:
-            raise Http404
+            subreddit = analyze(name)
+            print( subreddit )
         serializer = SubredditSerializer(subreddit)
         return Response(serializer.data)
 
