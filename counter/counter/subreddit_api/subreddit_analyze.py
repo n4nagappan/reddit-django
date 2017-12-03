@@ -19,15 +19,13 @@ def aggregate_counts(result):
 
     return total
 
-# Analyzes the character count for a given post under a subreddit
+# Analyzes the character count in comments of a given post
 def analyze_comments(id):
     submission = reddit.submission(id=id)
 
     submission.comments.replace_more(limit=None) # expand all comments
-    # submission.comments.replace_more(limit=0) # remove MoreComments
 
     comment_result = 0
-
     for comment in submission.comments.list():
         comment_result += count_char(comment.body)
 
@@ -43,14 +41,16 @@ def analyze_post(post, full_url):
     post_result[ "title_count" ] = count_char( post.title )
     post_result[ "url_count" ] = count_char( post.url )
     # post_result[ "comments_count" ] = analyze_comments( post.id )
+
+    # generate a link to access comments info
     post_result[ "comments_info" ] = full_url + "/" + post.id + "/comments_info"
     return post_result
     
 def analyze_posts(subreddit, full_url):
     posts_result = []
 
-    limit = 10
-    # limit = None
+    # limit = 10
+    limit = None
 
     count = 0
     for post in subreddit.hot(limit=limit):
@@ -74,9 +74,3 @@ def analyze(subreddit_name, full_url):
     result[ "posts" ] = analyze_posts( subreddit , full_url)
 
     return result
-
-# p_count_breakdown = analyze( 'facepalm' )
-# result = {
-#     "p_count_breakdown" : p_count_breakdown,
-#     "total_p_count" : aggregate_counts( p_count_breakdown )
-#     }
