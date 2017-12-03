@@ -20,11 +20,12 @@ from rest_framework import routers
 
 from counter.subreddit_api import views
 
-router = routers.DefaultRouter()
+router = routers.DefaultRouter(trailing_slash=False)
 # router.register(r'subreddit', views.SubredditAnalysisDetailedView)
 
 
 urlpatterns = [
+    url(r'^subreddits/(?P<name>.*)/(?P<post_id>.*)/comments_info', views.CommentsInfoView.as_view() ),
     url(r'^subreddits/(?P<name>.*)', views.SubredditAnalysisDetailedView.as_view() ),
     url(r'^admin/', admin.site.urls)
 ]

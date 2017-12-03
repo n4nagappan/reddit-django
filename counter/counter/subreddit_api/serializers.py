@@ -1,10 +1,15 @@
-from counter.subreddit_api.models import Subreddit, Post
+from counter.subreddit_api.models import Subreddit, Post, CommentsInfo
 from rest_framework import serializers
+
+class CommentsInfoSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = CommentsInfo
+        fields = ( 'post_id', 'total_count' )
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Post
-        fields = ( 'id', 'title', 'url' , 'id_count' , 'title_count' , 'url_count' )
+        fields = ( 'id', 'title', 'url' , 'id_count' , 'title_count' , 'url_count' , 'comments_info' )
 
 class SubredditSerializer(serializers.HyperlinkedModelSerializer):
     posts = PostSerializer(many=True)

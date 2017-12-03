@@ -18,3 +18,8 @@ class Post(models.Model):
     id_count = models.IntegerField( )
     title_count = models.IntegerField()
     url_count = models.IntegerField()
+    comments_info = models.CharField(max_length=600)
+
+class CommentsInfo(models.Model):
+    post_id = models.CharField( max_length=30, primary_key=True )
+    total_count = models.IntegerField()

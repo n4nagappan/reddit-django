@@ -31,10 +31,10 @@ def analyze_comments(id):
     for comment in submission.comments.list():
         comment_result += count_char(comment.body)
 
-    return comment_result
+    return { "post_id" : id , "total_count" : comment_result }
 
 # Analyzes the character count for a given post under a subreddit
-def analyze_post(post):
+def analyze_post(post, full_url):
     post_result = {};
     post_result[ "id" ] = post.id
     post_result[ "title" ] = post.title
@@ -42,25 +42,26 @@ def analyze_post(post):
     post_result[ "id_count" ] = count_char( post.id )
     post_result[ "title_count" ] = count_char( post.title )
     post_result[ "url_count" ] = count_char( post.url )
-    # post_result[ post.id ][ "comments" ] = analyze_comments( post.id )
+    # post_result[ "comments_count" ] = analyze_comments( post.id )
+    post_result[ "comments_info" ] = full_url + "/" + post.id + "/comments_info"
     return post_result
     
-def analyze_posts(subreddit):
+def analyze_posts(subreddit, full_url):
     posts_result = []
 
-    limit = 5
+    limit = 10
     # limit = None
 
     count = 0
     for post in subreddit.hot(limit=limit):
         print( "processing post ", count )
         count += 1
-        posts_result.append( analyze_post(post) )
+        posts_result.append( analyze_post(post, full_url) )
 
     return posts_result
 
 # Analyzes the character count for a given subreddit
-def analyze(subreddit_name):
+def analyze(subreddit_name, full_url):
     result = {}
     subreddit = reddit.subreddit(subreddit_name)
 
@@ -70,7 +71,7 @@ def analyze(subreddit_name):
     result[ "display_name_count" ] = count_char( subreddit.display_name )
     result[ "title_count" ] = count_char( subreddit.title )
     result[ "description_count" ] = count_char( subreddit.description )
-    result[ "posts" ] = analyze_posts( subreddit )
+    result[ "posts" ] = analyze_posts( subreddit , full_url)
 
     return result
 
