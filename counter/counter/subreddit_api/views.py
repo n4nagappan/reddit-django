@@ -21,7 +21,7 @@ class SubredditAnalysisDetailedView(APIView):
         if subreddit is None:
             subreddit = analyze( name, full_url )
             print( "fetched from reddit" )
-            print( subreddit )
+            # print( subreddit )
             serializer = SubredditSerializer(data=subreddit)
             if serializer.is_valid():
                 serializer.save()
@@ -29,7 +29,7 @@ class SubredditAnalysisDetailedView(APIView):
             
         else:
             print( "found in db" )
-            print( subreddit )
+            # print( subreddit )
             serializer = SubredditSerializer(subreddit)
             return Response(serializer.data)
 
@@ -46,7 +46,7 @@ class CommentsInfoView(APIView):
         if comments_info is None:
             comments_info = analyze_comments(post_id)
             print( "fetched from reddit" )
-            print( comments_info )
+            # print( comments_info )
             serializer = CommentsInfoSerializer(data=comments_info)
             if serializer.is_valid():
                 print( serializer.validated_data )
@@ -55,7 +55,7 @@ class CommentsInfoView(APIView):
             
         else:
             print( "found in db" )
-            print( comments_info )
+            # print( comments_info )
             serializer = CommentsInfoSerializer(comments_info)
             return Response(serializer.data)
 

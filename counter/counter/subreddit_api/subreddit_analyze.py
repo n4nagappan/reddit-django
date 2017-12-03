@@ -1,9 +1,12 @@
 import praw
 import json
 import os
+
+from counter.settings_secret import *
+
 reddit = praw.Reddit(
-        client_id = os.environ["REDDIT_CLIENT_ID"], 
-        client_secret = os.environ["REDDIT_CLIENT_SECRET"] , 
+        client_id = REDDIT_CLIENT_ID, 
+        client_secret = REDDIT_CLIENT_SECRET , 
         user_agent = "my user agent")
 
 DEFAULT_CHAR_TO_COUNT = 'p'
