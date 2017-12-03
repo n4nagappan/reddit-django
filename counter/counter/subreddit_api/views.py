@@ -19,7 +19,19 @@ class SubredditAnalysisDetailedView(APIView):
         subreddit = Subreddit.objects.filter(display_name=name).first()
         if subreddit is None:
             subreddit = analyze(name)
+            print( "fetched from reddit" )
             print( subreddit )
-        serializer = SubredditSerializer(subreddit)
-        return Response(serializer.data)
+            serializer = SubredditSerializer(data=subreddit)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            
+        else:
+            print( "found in db" )
+            print( subreddit )
+            serializer = SubredditSerializer(subreddit)
+            return Response(serializer.data)
+
+                            
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
