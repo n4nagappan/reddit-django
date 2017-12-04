@@ -13,7 +13,6 @@ from counter.subreddit_api.subreddit_analyze import analyze_subreddit, analyze_c
 
 CACHE_EXPIRY_TIME = 100
 
-
 # Create your views here.
 class SubredditAnalysisDetailedView(APIView):
     """
@@ -35,12 +34,12 @@ class SubredditAnalysisDetailedView(APIView):
             serializer = SubredditSerializer(data=subreddit)
             if serializer.is_valid():
                 # serializer.save()
+                print( "caching response" )
                 cache.set( get_subreddit_key( name , params ), serializer.data, CACHE_EXPIRY_TIME)
                 return Response(serializer.data)
             
         else:
             print( "found in cache" )
-            # print( subreddit )
             serializer = SubredditSerializer(subreddit)
             return Response(serializer.data)
 
@@ -58,10 +57,10 @@ class CommentsInfoView(APIView):
         if comments_info is None:
             comments_info = analyze_comments(post_id)
             print( "fetched from reddit" )
-            # print( comments_info )
             serializer = CommentsInfoSerializer(data=comments_info)
             if serializer.is_valid():
                 # serializer.save()
+                print( "caching response" )
                 cache.set( get_comments_info_key(name, post_id) , serializer.data, CACHE_EXPIRY_TIME)
                 return Response(serializer.data)
             
