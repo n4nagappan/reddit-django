@@ -27,5 +27,6 @@ router = routers.DefaultRouter(trailing_slash=False)
 urlpatterns = [
     url(r'^subreddits/(?P<name>.*)/(?P<post_id>.*)/comments_info', views.CommentsInfoView.as_view() ),
     url(r'^subreddits/(?P<name>.*)', views.SubredditAnalysisDetailedView.as_view() ),
-    url(r'^admin/', admin.site.urls)
+    url(r'^admin/', admin.site.urls),
+    url(r'^$', views.DefaultView.as_view() ),
 ]

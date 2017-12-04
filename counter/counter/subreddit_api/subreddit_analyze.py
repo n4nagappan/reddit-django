@@ -55,7 +55,7 @@ def analyze_posts(subreddit, full_url, params = {}):
 
     count = 0
     for post in subreddit.hot(limit= params["limit"] ):
-        print( "processing post ", count )
+        # print( "processing post ", count )
         count += 1
         posts_result.append( analyze_post(post, full_url) )
 

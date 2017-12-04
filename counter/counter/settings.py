@@ -127,3 +127,14 @@ REST_FRAMEWORK = {
         'DEFAULT_AUTHENTICATION_CLASSES': [],
         'DEFAULT_PERMISSION_CLASSES': [],
         }
+
+CACHES = {
+        'default': {
+            'BACKEND': 'redis_cache.RedisCache',
+            'LOCATION': '127.0.0.1:6379',
+            'OPTIONS': {
+                'DB': 0,
+                'PARSER_CLASS': 'redis.connection.HiredisParser',
+                },
+            },
+        }

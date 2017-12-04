@@ -23,3 +23,7 @@ class SimpleTest(TestCase):
         self.assertEqual( response.data["post_id"]  , "7gwomt" )
         self.assertEqual( response.data["comments_link"] , "https://www.reddit.com/r/facepalm/comments/7gwomt" )
         self.assertEqual( response.data["total_count"] , 52 )
+
+    def test_invalid_route(self):
+        response = self.client.get('/asdf')
+        self.assertEqual( response.status_code, 404 )
