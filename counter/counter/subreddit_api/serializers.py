@@ -4,7 +4,7 @@ from rest_framework import serializers
 class CommentsInfoSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = CommentsInfo
-        fields = ( 'post_id', 'total_count' )
+        fields = ( 'post_id', 'total_count' , 'comments_link' )
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:

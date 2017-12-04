@@ -9,6 +9,7 @@ from counter.subreddit_api.models import Subreddit, CommentsInfo
 from counter.subreddit_api.serializers import SubredditSerializer, CommentsInfoSerializer
 from counter.subreddit_api.subreddit_analyze import analyze, analyze_comments
 
+
 # Create your views here.
 class SubredditAnalysisDetailedView(APIView):
     """
@@ -17,14 +18,16 @@ class SubredditAnalysisDetailedView(APIView):
     def get(self, request, name, format=None):
         print("Analyzing ", name)
         subreddit = Subreddit.objects.filter(display_name=name).first()
-        full_url = request.build_absolute_uri()
+        full_url = request.build_absolute_uri('?')
+        params = get_params( request )
+
         if subreddit is None:
-            subreddit = analyze( name, full_url )
+            subreddit = analyze( name, full_url , params)
             print( "fetched from reddit" )
             # print( subreddit )
             serializer = SubredditSerializer(data=subreddit)
             if serializer.is_valid():
-                serializer.save()
+                # serializer.save()
                 return Response(serializer.data)
             
         else:
@@ -38,7 +41,7 @@ class SubredditAnalysisDetailedView(APIView):
 
 class CommentsInfoView(APIView):
     """
-    Analysis report for a given subreddit
+    Analysis report for comments on a subreddit post
     """
     def get(self, request, name, post_id, format=None):
         print("Analyzing Comments info for subreddit : ", name, "; Post Id : ", post_id)
@@ -50,7 +53,7 @@ class CommentsInfoView(APIView):
             serializer = CommentsInfoSerializer(data=comments_info)
             if serializer.is_valid():
                 print( serializer.validated_data )
-                serializer.save()
+                # serializer.save()
                 return Response(serializer.data)
             
         else:
@@ -61,3 +64,11 @@ class CommentsInfoView(APIView):
 
                             
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+def get_params(request):
+    params = {}
+
+    limit = request.GET.get('limit')
+    params[ "limit" ] = int(limit) if limit is not None and limit.isdigit() else 10
+
+    return params

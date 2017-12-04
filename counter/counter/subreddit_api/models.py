@@ -23,3 +23,4 @@ class Post(models.Model):
 class CommentsInfo(models.Model):
     post_id = models.CharField( max_length=30, primary_key=True )
     total_count = models.IntegerField()
+    comments_link = models.CharField( max_length=600 )

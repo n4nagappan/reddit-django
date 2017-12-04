@@ -29,10 +29,12 @@ def analyze_comments(id):
     submission.comments.replace_more(limit=None) # expand all comments
 
     comment_result = 0
+    print( submission.url )
     for comment in submission.comments.list():
         comment_result += count_char(comment.body)
 
-    return { "post_id" : id , "total_count" : comment_result }
+    return { "post_id" : id , "total_count" : comment_result ,
+            "comments_link" : "https://www.reddit.com/r/facepalm/comments/" + id }
 
 # Analyzes the character count for a given post under a subreddit
 def analyze_post(post, full_url):
@@ -49,14 +51,11 @@ def analyze_post(post, full_url):
     post_result[ "comments_info" ] = full_url + "/" + post.id + "/comments_info"
     return post_result
     
-def analyze_posts(subreddit, full_url):
+def analyze_posts(subreddit, full_url, params = {}):
     posts_result = []
 
-    # limit = 10
-    limit = None
-
     count = 0
-    for post in subreddit.hot(limit=limit):
+    for post in subreddit.hot(limit= params["limit"] ):
         print( "processing post ", count )
         count += 1
         posts_result.append( analyze_post(post, full_url) )
@@ -64,7 +63,7 @@ def analyze_posts(subreddit, full_url):
     return posts_result
 
 # Analyzes the character count for a given subreddit
-def analyze(subreddit_name, full_url):
+def analyze(subreddit_name, full_url, params={}):
     result = {}
     subreddit = reddit.subreddit(subreddit_name)
 
@@ -74,6 +73,6 @@ def analyze(subreddit_name, full_url):
     result[ "display_name_count" ] = count_char( subreddit.display_name )
     result[ "title_count" ] = count_char( subreddit.title )
     result[ "description_count" ] = count_char( subreddit.description )
-    result[ "posts" ] = analyze_posts( subreddit , full_url)
+    result[ "posts" ] = analyze_posts( subreddit , full_url, params)
 
     return result
