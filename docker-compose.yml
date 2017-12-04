@@ -3,6 +3,8 @@ version: '3'
 services:
   web:
     build: .
+    environment:
+      - REDIS_LOCATION=redis:6379
     command: python3 counter/manage.py runserver 0.0.0.0:8000
     ports:
       - "8000:8000"

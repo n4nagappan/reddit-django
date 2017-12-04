@@ -128,10 +128,12 @@ REST_FRAMEWORK = {
         'DEFAULT_PERMISSION_CLASSES': [],
         }
 
+REDIS_LOCATION = os.environ.get('REDIS_LOCATION') or '127.0.0.1:6379'
+
 CACHES = {
         'default': {
             'BACKEND': 'redis_cache.RedisCache',
-            'LOCATION': '127.0.0.1:6379',
+            'LOCATION': REDIS_LOCATION,
             'OPTIONS': {
                 'DB': 0,
                 'PARSER_CLASS': 'redis.connection.HiredisParser',
