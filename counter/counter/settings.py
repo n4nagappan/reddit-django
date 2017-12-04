@@ -126,5 +126,4 @@ REST_FRAMEWORK = {
         #     ],
         'DEFAULT_AUTHENTICATION_CLASSES': [],
         'DEFAULT_PERMISSION_CLASSES': [],
-        'PAGE_SIZE': 10
         }

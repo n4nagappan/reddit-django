@@ -7,7 +7,7 @@ from rest_framework import status
 
 from counter.subreddit_api.models import Subreddit, CommentsInfo
 from counter.subreddit_api.serializers import SubredditSerializer, CommentsInfoSerializer
-from counter.subreddit_api.subreddit_analyze import analyze, analyze_comments
+from counter.subreddit_api.subreddit_analyze import analyze_subreddit, analyze_comments
 
 
 # Create your views here.
@@ -16,13 +16,13 @@ class SubredditAnalysisDetailedView(APIView):
     Analysis report for a given subreddit
     """
     def get(self, request, name, format=None):
-        print("Analyzing ", name)
+        print("Analyzing subreddit : ", name)
         subreddit = Subreddit.objects.filter(display_name=name).first()
         full_url = request.build_absolute_uri('?')
         params = get_params( request )
 
         if subreddit is None:
-            subreddit = analyze( name, full_url , params)
+            subreddit = analyze_subreddit( name, full_url , params)
             print( "fetched from reddit" )
             # print( subreddit )
             serializer = SubredditSerializer(data=subreddit)
@@ -46,6 +46,7 @@ class CommentsInfoView(APIView):
     def get(self, request, name, post_id, format=None):
         print("Analyzing Comments info for subreddit : ", name, "; Post Id : ", post_id)
         comments_info = CommentsInfo.objects.filter(post_id=post_id).first()
+
         if comments_info is None:
             comments_info = analyze_comments(post_id)
             print( "fetched from reddit" )
@@ -69,6 +70,6 @@ def get_params(request):
     params = {}
 
     limit = request.GET.get('limit')
-    params[ "limit" ] = int(limit) if limit is not None and limit.isdigit() else 10
+    params[ "limit" ] = int(limit) if limit is not None and limit.isdigit() else 100
 
     return params

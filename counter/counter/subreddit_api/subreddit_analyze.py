@@ -29,7 +29,6 @@ def analyze_comments(id):
     submission.comments.replace_more(limit=None) # expand all comments
 
     comment_result = 0
-    print( submission.url )
     for comment in submission.comments.list():
         comment_result += count_char(comment.body)
 
@@ -63,7 +62,7 @@ def analyze_posts(subreddit, full_url, params = {}):
     return posts_result
 
 # Analyzes the character count for a given subreddit
-def analyze(subreddit_name, full_url, params={}):
+def analyze_subreddit(subreddit_name, full_url, params={}):
     result = {}
     subreddit = reddit.subreddit(subreddit_name)
 
